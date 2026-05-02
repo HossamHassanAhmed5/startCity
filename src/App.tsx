@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import { AIAssistantProvider } from './contexts/AIAssistantContext';
 
 // Layouts
 import MainLayout from './layouts/MainLayout';
@@ -44,7 +45,8 @@ import InvestorDashboard from './pages/InvestorDashboard';
 const App: React.FC = () => {
   return (
     <AuthProvider>
-      <Routes>
+      <AIAssistantProvider>
+        <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
           <Route path="startup-builder" element={<StartupBuilder />} />
@@ -88,7 +90,8 @@ const App: React.FC = () => {
           <Route path="bookmarks" element={<InvestorDashboard />} />
         </Route>
         <Route path="*" element={<NotFound />} />
-      </Routes>
+        </Routes>
+      </AIAssistantProvider>
     </AuthProvider>
   );
 };

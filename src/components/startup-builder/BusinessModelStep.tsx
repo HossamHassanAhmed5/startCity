@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import RecommendationBadge from '../ai-assistant/RecommendationBadge';
 
 interface BusinessModelStepProps {
   formData: any;
@@ -6,8 +7,14 @@ interface BusinessModelStepProps {
 }
 
 const BusinessModelStep: React.FC<BusinessModelStepProps> = ({ formData, updateFormData }) => {
+  const [focusedField, setFocusedField] = useState<string | null>(null);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     updateFormData({ [e.target.name]: e.target.value });
+  };
+
+  const handleRecommendation = (fieldName: string, value: string) => {
+    updateFormData({ [fieldName]: value });
   };
 
   return (
@@ -19,14 +26,25 @@ const BusinessModelStep: React.FC<BusinessModelStepProps> = ({ formData, updateF
 
       <div className="space-y-6">
         <div>
-          <label htmlFor="revenueModel" className="block text-sm font-medium text-neutral-700 mb-1">
-            Revenue Model
-          </label>
+          <div className="flex items-center mb-1">
+            <label htmlFor="revenueModel" className="block text-sm font-medium text-neutral-700">
+              Revenue Model
+            </label>
+            {Object.keys(formData).length > 0 && formData.industry && (
+              <RecommendationBadge
+                fieldName="revenueModel"
+                formData={formData}
+                onRecommendation={(value) => handleRecommendation('revenueModel', value)}
+              />
+            )}
+          </div>
           <select
             id="revenueModel"
             name="revenueModel"
             value={formData.revenueModel || ''}
             onChange={handleChange}
+            onFocus={() => setFocusedField('revenueModel')}
+            onBlur={() => setFocusedField(null)}
             className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500"
           >
             <option value="">Select a revenue model</option>

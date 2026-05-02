@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import RecommendationBadge from '../ai-assistant/RecommendationBadge';
 
 interface IdeaStepProps {
   formData: any;
@@ -6,8 +7,14 @@ interface IdeaStepProps {
 }
 
 const IdeaStep: React.FC<IdeaStepProps> = ({ formData, updateFormData }) => {
+  const [focusedField, setFocusedField] = useState<string | null>(null);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     updateFormData({ [e.target.name]: e.target.value });
+  };
+
+  const handleRecommendation = (fieldName: string, value: string) => {
+    updateFormData({ [fieldName]: value });
   };
 
   return (
@@ -34,14 +41,25 @@ const IdeaStep: React.FC<IdeaStepProps> = ({ formData, updateFormData }) => {
         </div>
 
         <div>
-          <label htmlFor="industry" className="block text-sm font-medium text-neutral-700 mb-1">
-            Industry
-          </label>
+          <div className="flex items-center mb-1">
+            <label htmlFor="industry" className="block text-sm font-medium text-neutral-700">
+              Industry
+            </label>
+            {Object.keys(formData).length > 0 && formData.businessName && (
+              <RecommendationBadge
+                fieldName="industry"
+                formData={formData}
+                onRecommendation={(value) => handleRecommendation('industry', value)}
+              />
+            )}
+          </div>
           <select
             id="industry"
             name="industry"
             value={formData.industry || ''}
             onChange={handleChange}
+            onFocus={() => setFocusedField('industry')}
+            onBlur={() => setFocusedField(null)}
             className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500"
           >
             <option value="">Select an industry</option>

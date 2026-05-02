@@ -10,6 +10,9 @@ import BusinessModelStep from '../components/startup-builder/BusinessModelStep';
 import MVPStep from '../components/startup-builder/MVPStep';
 import FundingStep from '../components/startup-builder/FundingStep';
 
+// AI Assistant
+import SMSMChatWidget from '../components/ai-assistant/SMSMChatWidget';
+
 const steps = [
   { id: 'idea', name: 'Idea', component: IdeaStep },
   { id: 'validation', name: 'Validation', component: ValidationStep },
@@ -150,6 +153,7 @@ const StartupBuilder: React.FC = () => {
           </div>
         </div>
       </div>
+      <SMSMChatWidget formData={formData} />
     </div>
   );
 };
